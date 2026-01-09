@@ -1,0 +1,190 @@
+﻿<Window x:Class="windows_phone_app_shortcut.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:windows_phone_app_shortcut"
+        mc:Ignorable="d"
+        Title="Phone App Shortcuts" Height="560" Width="720">
+
+    <!-- Window background as a gradient -->
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFF7FAFB" Offset="0" />
+            <GradientStop Color="#FFF0F4F8" Offset="1" />
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Window.Resources>
+        <!-- Accent colors -->
+        <Color x:Key="AccentColor">#FF4B9AF6</Color>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+        <SolidColorBrush x:Key="CardBrush">#FFFFFFFF</SolidColorBrush>
+        <SolidColorBrush x:Key="SubtleTextBrush">#FF6B7280</SolidColorBrush>
+
+        <!-- Button style -->
+        <Style TargetType="Button" x:Key="PrimaryButton">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.92" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.85" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListBoxItem style -->
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Margin" Value="4,2" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" Background="Transparent" CornerRadius="8">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#FFF1F9FF" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#FFE8F3FF" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataTemplate for AppInfo items: give explicit key and use x:Type for DataType -->
+        <DataTemplate x:Key="AppTemplate" DataType="{x:Type local:AppInfo}">
+            <Grid Margin="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Icon area: show image if IconPath exists, otherwise show phone glyph -->
+                <Border Width="40" Height="40" CornerRadius="8" Background="#FFEFF6FF" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid>
+                        <!-- Image for app icon; bind Visibility to IconPath using a converter-less approach -->
+                        <Image Source="{Binding IconPath}" Width="40" Height="40" Stretch="UniformToFill">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IconPath}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+
+                        <!-- Phone glyph as fallback -->
+                        <TextBlock Text="📱" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IconPath}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding DisplayName}" FontSize="14" FontWeight="SemiBold" Foreground="#FF111827" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding PackageName}" FontSize="12" Foreground="{StaticResource SubtleTextBrush}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <!-- chevron -->
+                <TextBlock Grid.Column="2" Text="›" FontSize="18" Foreground="#FFD1D5DB" VerticalAlignment="Center" Margin="10,0,6,0" />
+            </Grid>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header: use Grid to allow right-aligned button -->
+        <Grid Grid.Row="0" Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Phone App Shortcuts" FontSize="20" FontWeight="Bold" Foreground="#FF0F172A" />
+                <TextBlock Text="Create scrcpy shortcuts for installed Android apps" Foreground="{StaticResource SubtleTextBrush}" FontSize="12" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <!-- Generate icons button -->
+                <Button Name="GenerateIconsButton" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Click="GenerateIconsButton_Click">Generate App Icons</Button>
+
+                <!-- keep the existing RefreshButton name and click handler -->
+                <Button Name="RefreshButton" Style="{StaticResource PrimaryButton}" Margin="0,0,0,0" Click="RefreshButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⟳" Margin="0,0,6,0" FontSize="14" />
+                        <TextBlock Text="Refresh" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Card container -->
+        <Border Grid.Row="1" Margin="0,12,0,12" Background="{StaticResource CardBrush}" CornerRadius="12" Padding="12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- optional search / instruction row -->
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
+                    <TextBlock VerticalAlignment="Center" Foreground="{StaticResource SubtleTextBrush}" FontSize="12">Double-click an app to create a shortcut</TextBlock>
+                </StackPanel>
+
+                <!-- Apps list -->
+                <ListBox Name="AppsList" Grid.Row="1" MouseDoubleClick="AppsList_MouseDoubleClick" Background="Transparent" BorderThickness="0" ItemTemplate="{StaticResource AppTemplate}" />
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="6,8,0,0" Foreground="{StaticResource SubtleTextBrush}" FontSize="11">
+            Requires USB-connected Android device, adb and scrcpy placed in the configured resources folder.
+        </TextBlock>
+    </Grid>
+</Window>

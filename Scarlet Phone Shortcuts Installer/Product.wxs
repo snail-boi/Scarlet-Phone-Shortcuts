@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Scarlet Phone Shortcuts" Language="1033" Version="1.0.0.0" Manufacturer="Snailtech" UpgradeCode="e7b1c9f8-6f7d-4a2b-9f3d-2e5b8a1c4d9f">
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" CompressionLevel="high"/>
+
+    <!-- Icon -->
+    <Icon Id="PhoneUtilsIcon" SourceFile="assets\logo.ico" />
+
+    <!-- Upgrade info for updates -->
+    <Upgrade Id="e7b1c9f8-6f7d-4a2b-9f3d-2e5b8a1c4d9f">
+      <UpgradeVersion Minimum="0.0.0" Maximum="99.0.0" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDPRODUCTS"/>
+    </Upgrade>
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts Before="InstallInitialize"/>
+    </InstallExecuteSequence>
+
+    <!-- NOTE: The standard Wix UI dialogs (for example, "WixUI_Minimal") are provided by the WixUIExtension.
+         To enable the UI and avoid unresolved symbol errors, add the WixUIExtension to your .wixproj like this:
+
+           <ItemGroup>
+             <WixExtension Include="WixUIExtension" />
+           </ItemGroup>
+
+         If you don't want to reference the extension, remove the UIRef (as done here) and the installer will be built without the standard dialogs. -->
+
+    <!-- Removed <UIRef Id="WixUI_Minimal"/> to avoid unresolved WixUI extension reference when the project doesn't include WixUIExtension -->
+
+    <!-- Directory structure -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <!-- Main EXE in Program Files -->
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Scarlet Phone Shortcuts">
+
+          <Component Id="ScarletPhoneShortcutsExeComponent" Guid="e3f8c1a4-4c3d-44a8-90f3-1234567890ab">
+            <File Id="ScarletPhoneShortcutsExe" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Scarlet Phone Shortcuts.exe" KeyPath="yes" Vital="yes"/>
+          </Component>
+
+          <Component Id="ScarletPhoneShortcutsDllComponent" Guid="a8b9c2d3-6e4f-42b2-91f4-abcdefabcdef">
+            <File Id="ScarletPhoneShortcutsDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Scarlet Phone Shortcuts.dll" KeyPath="yes" Vital="yes"/>
+          </Component>
+
+          <Component Id="DepsJsonComponent" Guid="789abc12-345d-42fa-b567-9876fedcba12">
+            <File Id="DepsJson" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Scarlet Phone Shortcuts.deps.json" KeyPath="yes" Vital="yes"/>
+          </Component>
+
+          <Component Id="RuntimeConfigJsonComponent" Guid="3456ab78-90cd-42ef-a123-fedcba987654">
+            <File Id="RuntimeConfigJson" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Scarlet Phone Shortcuts.runtimeconfig.json" KeyPath="yes" Vital="yes"/>
+          </Component>
+
+        </Directory>
+      </Directory>
+
+      <!-- Resources folder in per-user AppData -->
+      <Directory Id="AppDataFolder">
+        <Directory Id="AppDataPhoneUtilsFolder" Name="Phone Utils">
+          <Directory Id="AppDataResourcesFolder" Name="Resources">
+
+            <!-- Resource files with HKCU key path -->
+            <Component Id="AdbExeComponent" Guid="1a2b3c4d-5e6f-47a8-912b-abcdef123aaa">
+              <File Id="AdbExe" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\adb.exe"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="AdbExe" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="AdbWinApiDllComponent" Guid="2b3c4d5e-6f7a-48b9-923c-bcdef123abcd">
+              <File Id="AdbWinApiDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\AdbWinApi.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="AdbWinApiDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="AdbWinUsbApiDllComponent" Guid="abcdef12-3456-6789-abcd-123456abcdef">
+              <File Id="AdbWinUsbApiDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\AdbWinUsbApi.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="AdbWinUsbApiDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="AvcodecDllComponent" Guid="3c4d5e6f-7a8b-49c0-934d-cdef123abcde">
+              <File Id="AvcodecDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\avcodec-61.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="AvcodecDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="AvformatDllComponent" Guid="4d5e6f7a-8b9c-50d1-945e-def123abcd12">
+              <File Id="AvformatDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\avformat-61.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="AvformatDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="AvutilDllComponent" Guid="5e6f7a8b-9c0d-51e2-956f-ef123abcd123">
+              <File Id="AvutilDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\avutil-59.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="AvutilDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="LibusbDllComponent" Guid="6f7a8b9c-0d1e-52f3-9670-f123abcd1234">
+              <File Id="LibusbDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\libusb-1.0.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="LibusbDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="ScrcpyExeComponent" Guid="7a8b9c0d-1e2f-5345-9781-1234abcdef12">
+              <File Id="ScrcpyExe" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\scrcpy.exe"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="ScrcpyExe" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="ScrcpyServerComponent" Guid="8b9c0d1e-2f3a-5456-9892-2345abcdef12">
+              <File Id="ScrcpyServer" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\scrcpy-server"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="ScrcpyServer" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="SDL2DllComponent" Guid="9c0d1e2f-3a4b-5567-9903-3456abcdef12">
+              <File Id="SDL2Dll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\SDL2.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="SDL2Dll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="SwresampleDllComponent" Guid="0d1e2f3a-4b5c-5678-9014-4567abcdef12">
+              <File Id="SwresampleDll" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\swresample-5.dll"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="SwresampleDll" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <Component Id="logo" Guid="0d1e2f3a-4b5c-5678-9014-4567abcdef32">
+              <File Id="logo" Source="..\windows_phone_app_shortcut\bin\Release\net8.0-windows\Resources\logo.png"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils\Resources" Name="logo" Type="string" Value="1" KeyPath="yes"/>
+            </Component>
+
+            <!-- Folder component to remove directories and files on uninstall -->
+            <Component Id="AppDataFolderComponent" Guid="abcdef12-3456-7890-abcd-ef1234567890">
+              <CreateFolder />
+              <RemoveFile Id="RemoveAllFilesFromResources" Name="*" On="uninstall" Directory="AppDataResourcesFolder"/>
+              <RemoveFolder Id="RemoveResourcesFolder" On="uninstall" Directory="AppDataResourcesFolder"/>
+              <RemoveFolder Id="RemoveAppDataPhoneUtilsFolder" On="uninstall" Directory="AppDataPhoneUtilsFolder"/>
+              <RegistryValue Root="HKCU" Key="Software\PhoneUtils" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+
+          </Directory>
+        </Directory>
+      </Directory>
+
+    </Directory>
+
+    <!-- Feature -->
+    <Feature Id="Complete" Title="Scarlet Phone Shortcuts" Level="1">
+      <ComponentRef Id="ScarletPhoneShortcutsExeComponent"/>
+      <ComponentRef Id="ScarletPhoneShortcutsDllComponent"/>
+      <ComponentRef Id="DepsJsonComponent"/>
+      <ComponentRef Id="RuntimeConfigJsonComponent"/>
+
+      <ComponentRef Id="AdbExeComponent"/>
+      <ComponentRef Id="AdbWinApiDllComponent"/>
+      <ComponentRef Id="AdbWinUsbApiDllComponent"/>
+      <ComponentRef Id="AvcodecDllComponent"/>
+      <ComponentRef Id="AvformatDllComponent"/>
+      <ComponentRef Id="AvutilDllComponent"/>
+      <ComponentRef Id="LibusbDllComponent"/>
+      <ComponentRef Id="ScrcpyExeComponent"/>
+      <ComponentRef Id="ScrcpyServerComponent"/>
+      <ComponentRef Id="SDL2DllComponent"/>
+      <ComponentRef Id="SwresampleDllComponent"/>
+      <ComponentRef Id="logo"/>
+      <ComponentRef Id="AppDataFolderComponent"/>
+
+    </Feature>
+
+  </Product>
+</Wix>

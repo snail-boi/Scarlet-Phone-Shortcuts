@@ -184,7 +184,7 @@
 
         <!-- Footer -->
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="6,8,0,0" Foreground="{StaticResource SubtleTextBrush}" FontSize="11">
-            Requires USB-connected Android device, adb and scrcpy placed in the configured resources folder.
+            Requires USB-connected Android device.
         </TextBlock>
     </Grid>
 </Window>

@@ -15,7 +15,7 @@ public static class Updater
 {
     private const string RepoOwner = "snail-boi";
     private const string RepoName = "Scarlet-Phone-Shortcuts";
-    private const string InstallerPrefix = "Scarlet_Phone_Shortcuts_Installer"; // Updated prefix
+    private const string InstallerPrefix = "Scarlet.Phone.Shortcuts.Installer"; // Updated prefix
 
     /// <summary>
     /// Call this at app startup (Option 1: fire-and-forget) or in Loaded event.

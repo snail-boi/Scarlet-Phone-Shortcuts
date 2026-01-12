@@ -9,7 +9,7 @@ namespace windows_phone_app_shortcut
     /// </summary>
     public partial class App : Application
     {
-        public static readonly string CurrentVersion = "v1.0.6";
+        public static readonly string CurrentVersion = "v1.0.6.1";
     }
 
 }

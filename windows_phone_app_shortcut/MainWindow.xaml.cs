@@ -26,6 +26,7 @@ namespace windows_phone_app_shortcut
         public MainWindow()
         {
             InitializeComponent();
+            Updater.CheckForUpdateAsync(App.CurrentVersion);
             resourcesPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Snail", "Resources");
             Loaded += MainWindow_Loaded;
         }
